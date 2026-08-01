@@ -23,18 +23,19 @@ jobs:
       - name: Build
         run: bun run build
 
-      - name: Deploy via rsync
-        uses: easingthemes/ssh-deploy@v5
+      - name: Deploy to server
+        uses: appleboy/scp-action@v0.1.7
         with:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          ARGS: '-avz --delete'
-          SOURCE: 'dist/'
-          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: ${{ secrets.REMOTE_TARGET }}
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: 'dist/*'
+          target: ${{ secrets.REMOTE_TARGET }}
+          strip_components: 1
+          rm: true
 
       - name: Reload nginx
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
