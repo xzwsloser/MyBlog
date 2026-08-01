@@ -1,20 +1,16 @@
 import { createReadStream, existsSync, statSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { extname, join, normalize, resolve, sep } from 'node:path'
-import { Readable } from 'node:stream'
 
 const root = resolve(import.meta.dirname, '..')
-const clientDir = join(root, 'dist/client')
-const serverEntry = join(root, '.vercel/output/_functions/entry.mjs')
+const distDir = join(root, 'dist')
 const preferredPort = Number.parseInt(process.env.PORT ?? process.argv[2] ?? '4321', 10)
 const host = process.env.HOST ?? '127.0.0.1'
 
-if (!existsSync(clientDir) || !existsSync(serverEntry)) {
+if (!existsSync(distDir)) {
   console.error('Missing build output. Run `bun run build` before `bun preview`.')
   process.exit(1)
 }
-
-const { default: app } = await import(serverEntry)
 
 const contentTypes = {
   '.avif': 'image/avif',
@@ -38,9 +34,9 @@ const contentTypes = {
 function getStaticPath(pathname) {
   const decodedPath = decodeURIComponent(pathname)
   const relativePath = normalize(decodedPath).replace(/^(\.\.(\/|\\|$))+/, '')
-  const filePath = join(clientDir, relativePath)
+  const filePath = join(distDir, relativePath)
 
-  if (!filePath.startsWith(clientDir + sep) && filePath !== clientDir) {
+  if (!filePath.startsWith(distDir + sep) && filePath !== distDir) {
     return null
   }
 
@@ -56,7 +52,7 @@ function getStaticPath(pathname) {
   return null
 }
 
-function sendStaticFile(res, filePath, method) {
+function serveFile(res, filePath, method) {
   const headers = {
     'content-type': contentTypes[extname(filePath)] ?? 'application/octet-stream'
   }
@@ -72,26 +68,11 @@ function sendStaticFile(res, filePath, method) {
   createReadStream(filePath).pipe(res)
 }
 
-function readRequestBody(req) {
-  if (req.method === 'GET' || req.method === 'HEAD') {
-    return undefined
-  }
-  return Readable.toWeb(req)
-}
-
-function writeResponse(res, response, method) {
-  res.writeHead(response.status, Object.fromEntries(response.headers))
-  if (method === 'HEAD' || !response.body) {
-    res.end()
-    return
-  }
-  Readable.fromWeb(response.body).pipe(res)
-}
-
-async function handleRequest(req, res, currentPort) {
+function handleRequest(req, res) {
   try {
-    const url = new URL(req.url ?? '/', `http://${req.headers.host ?? `${host}:${currentPort}`}`)
+    const url = new URL(req.url ?? '/', `http://${req.headers.host ?? 'localhost'}`)
 
+    // Trailing slash redirect (except root)
     if (url.pathname !== '/' && url.pathname.endsWith('/')) {
       url.pathname = url.pathname.slice(0, -1)
       res.writeHead(308, { location: `${url.pathname}${url.search}` })
@@ -101,18 +82,19 @@ async function handleRequest(req, res, currentPort) {
 
     const staticPath = getStaticPath(url.pathname)
     if (staticPath) {
-      sendStaticFile(res, staticPath, req.method)
+      serveFile(res, staticPath, req.method)
       return
     }
 
-    const request = new Request(url, {
-      method: req.method,
-      headers: req.headers,
-      body: readRequestBody(req),
-      duplex: 'half'
-    })
-    const response = await app.fetch(request)
-    writeResponse(res, response, req.method)
+    // SPA fallback: serve index.html for unmatched routes
+    const fallback = join(distDir, 'index.html')
+    if (existsSync(fallback)) {
+      serveFile(res, fallback, req.method)
+      return
+    }
+
+    res.writeHead(404, { 'content-type': 'text/plain; charset=utf-8' })
+    res.end('Not Found')
   } catch (error) {
     console.error(error)
     res.writeHead(500, { 'content-type': 'text/plain; charset=utf-8' })
@@ -121,7 +103,7 @@ async function handleRequest(req, res, currentPort) {
 }
 
 function listen(currentPort) {
-  const server = createServer((req, res) => handleRequest(req, res, currentPort))
+  const server = createServer((req, res) => handleRequest(req, res))
 
   server.once('error', (error) => {
     if (error.code === 'EADDRINUSE' && currentPort < preferredPort + 10) {

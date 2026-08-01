@@ -1,5 +1,6 @@
 ---
-import { Footer, Header, ThemeProvider } from 'astro-pure/components/basic'
+import { Header, ThemeProvider } from 'astro-pure/components/basic'
+import Footer from '@/components/custom/Footer.astro'
 import type { SiteMeta } from 'astro-pure/types'
 import BaseHead from '@/components/BaseHead.astro'
 import config from '@/site-config'
@@ -8,6 +9,7 @@ import config from '@/site-config'
 // all pages through the use of the <BaseLayout /> component.
 import '@/assets/styles/global.css'
 import '@/assets/styles/app.css'
+import '@/assets/styles/custom.css'
 
 interface Props {
   meta: SiteMeta
