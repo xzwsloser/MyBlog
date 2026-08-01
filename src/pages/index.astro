@@ -4,16 +4,10 @@ import { Image } from 'astro:assets'
 import { Quote } from 'astro-pure/advanced'
 import { PostPreview } from 'astro-pure/components/pages'
 import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
-import { Button, Card, Icon, Label } from 'astro-pure/user'
+import { Button, Icon, Label } from 'astro-pure/user'
 import PageLayout from '@/layouts/BaseLayout.astro'
-import ProjectCard from '@/components/home/ProjectCard.astro'
 import Section from '@/components/home/Section.astro'
-import SkillLayout from '@/components/home/SkillLayout.astro'
 import config from '@/site-config'
-
-const languages = ['Html', 'JavaScript', 'CSS', 'Shell']
-const frontend = ['TypeScript', 'Vite', 'Webpack', 'Astro']
-const backend = ['Vercel', 'Waline']
 
 const MAX_POSTS = 10
 const allPosts = await getBlogCollection()
@@ -42,50 +36,61 @@ if (!images[imagePath])
 
       <div class='flex flex-col items-center gap-y-4'>
         <h1 class='text-3xl font-medium'>{config.author}</h1>
-        <div class='flex flex-wrap justify-center gap-x-7 gap-y-3'>
-          <Label title='Somewhere'>
+        <div class='flex flex-wrap items-center justify-center gap-x-5 gap-y-3'>
+          <Label title='Wuhan, China'>
             <Icon name='location' class='size-5' slot='icon' />
           </Label>
-          <Label
-            title='Source code'
-            as='a'
-            href='https://github.com/cworld1/astro-theme-pure'
-            target='_blank'
-          >
+          <Label title='GitHub' as='a' href='https://github.com/xzwsloser' target='_blank'>
             <Icon name='github' class='size-5' slot='icon' />
           </Label>
+          <!-- Language toggle -->
+          <button
+            id='lang-toggle'
+            class='inline-flex items-center gap-1 rounded-full border bg-background px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm transition hover:border-primary/50 hover:text-foreground'
+            aria-label='Toggle language'
+          >
+            <span class='lang-label' data-lang='en'>EN</span>
+            <span class='lang-label hidden' data-lang='zh'>中文</span>
+            <span class='text-[10px]'>/</span>
+          </button>
         </div>
       </div>
 
-      {/* Get template */}
       <a
-        href='https://github.com/cworld1/astro-theme-pure'
+        href='https://github.com/xzwsloser'
         target='_blank'
         class='flex flex-row items-center gap-x-3 rounded-full border bg-background px-4 py-2 text-sm shadow-sm transition-shadow hover:shadow-md'
       >
         <span class='relative flex items-center justify-center'>
-          <span
-            class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75'
-          ></span>
-          <span class='size-2 rounded-full bg-green-400'></span>
+          <span class='absolute size-2 animate-ping rounded-full border border-green-400 bg-green-400 opacity-75' />
+          <span class='size-2 rounded-full bg-green-400' />
         </span>
-        <p class='font-medium text-muted-foreground'>Get Template</p>
+        <p class='font-medium text-muted-foreground'>
+          <span class='lang-en'>Open to collaborate</span>
+          <span class='lang-zh hidden'>欢迎交流与合作</span>
+        </p>
       </a>
     </section>
 
     <div id='content' class='animate flex flex-col gap-y-10 md:w-4/5 lg:w-5/6'>
-      <Section title='About'>
-        <p class='text-muted-foreground'>Developer / Designer</p>
-        <p class='text-muted-foreground'>
-          Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione
-          indoctum dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel,
-          at eum oratio possit voluptatum.
+      <!-- About Me -->
+      <Section title='About Me'>
+        <p class='text-muted-foreground lang-en'>
+          Student and developer, currently diving into AI Infrastructure, LLMs / Multi-modal,
+          Agent architectures, and backend system design. Passionate about low-level computer
+          systems and the engineering behind large-scale AI — always learning, always building.
+        </p>
+        <p class='text-muted-foreground lang-zh hidden'>
+          学生 / 开发者，正在学习 AI Infra、大模型 / 多模态、Agent、后端架构设计等技术，
+          对计算机底层技术感兴趣，持续学习与探索中。
         </p>
         <Button title='More about me' class='w-fit self-end' href='/about' variant='ahead' />
       </Section>
+
+      <!-- Recent Posts -->
       {
         allPostsByDate.length > 0 && (
-          <Section title='Posts'>
+          <Section title='Recent Posts'>
             <ul class='flex flex-col gap-y-1.5 sm:gap-y-2'>
               {allPostsByDate.map((p) => (
                 <li class='flex flex-col gap-x-2 sm:flex-row'>
@@ -93,105 +98,109 @@ if (!images[imagePath])
                 </li>
               ))}
             </ul>
-            <Button title='More posts' class='w-fit self-end' href='/blog' variant='ahead' />
+            <Button title='View all posts' class='w-fit self-end' href='/blog' variant='ahead' />
           </Section>
         )
       }
 
-      {
-        /* <Section title='Experience'>
-      <Card
-        heading='Lorem Ipsum'
-        subheading='Sit amet consectetur'
-        date='Dec 2022 - Nov 2023'
-        imagePath='/src/assets/about-astro.png'
-        altText='Lorem, ipsum dolor sit'
-        imageClass='h-12 w-auto md:-start-16'
-      >
-        <ul class='ms-4 list-disc text-muted-foreground'>
-          <li>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-            molestiae laboriosam pariatur!
-
-            <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
-          </li>
-        </ul>
-      </Card>
-      <Card
-        heading='Lorem Ipsum'
-        subheading='Sit amet consectetur'
-        date='Dec 2022 - Nov 2023'
-        imagePath='/src/assets/about-astro.png'
-        altText='Lorem, ipsum dolor sit'
-        imageClass='h-12 w-auto md:-start-16'
-      />
-    </Section> */
-      }
+      <!-- Education -->
       <Section title='Education'>
-        <Card
-          as='a'
-          heading='Lorem ipsum'
-          subheading='Lorem ipsum dolor sit amet, vidit suscipit at mei.'
-          date='August 2021 - July 2025'
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        >
-          {
-            /* <ul class='ms-4 list-disc text-muted-foreground'>
-          <li>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolore debitis recusandae, ut
-            molestiae laboriosam pariatur!
-          </li>
-          <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae, pariatur!</li>
-        </ul> */
-          }
-        </Card>
-      </Section>
-
-      <Section title='Website List'>
-        <div class='grid grid-cols-1 gap-3 sm:grid-cols-2'>
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Do not go gentle into that good night'
-            imagePath='/src/assets/projects/1.avif'
-          />
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Old age burn and rave at close of day'
-            imagePath='/src/assets/projects/2.avif'
-          />
-          <ProjectCard
-            href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-            heading='Lorem ipsum'
-            subheading='Rage, rage against the dying of the light'
-            imagePath='/src/assets/projects/3.avif'
-          />
-          <ProjectCard
-            href='/projects'
-            heading='More projects'
-            subheading='Check out more projects'
-            imagePath='/src/assets/projects/4.avif'
-          />
+        <div class='relative border-s-2 border-border/50 ps-6'>
+          <div class='absolute -start-[9px] top-0 size-4 rounded-full border-2 border-primary/60 bg-background'></div>
+          <div class='rounded-xl border bg-card/50 p-4 sm:p-5'>
+            <div class='flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1'>
+              <div>
+                <div class='text-sm font-medium text-muted-foreground'>
+                  <span class='lang-en'>Huazhong University of Science & Technology</span>
+                  <span class='lang-zh hidden'>华中科技大学</span>
+                </div>
+                <div class='mt-1 text-base font-medium'>
+                  <span class='lang-en'>B.E. in Communication Engineering</span>
+                  <span class='lang-zh hidden'>通信工程 本科</span>
+                </div>
+                <div class='mt-1 text-sm text-muted-foreground'>
+                  <span class='lang-en'>School of EIC · Wuhan, Hubei</span>
+                  <span class='lang-zh hidden'>电子信息与通信学院 · 湖北武汉</span>
+                </div>
+              </div>
+              <span class='shrink-0 rounded-full border px-3 py-0.5 text-xs text-muted-foreground'>
+                <span class='lang-en'>Sep 2023 – Present</span>
+                <span class='lang-zh hidden'>2023.9 – 至今</span>
+              </span>
+            </div>
+          </div>
         </div>
       </Section>
 
-      <Section title='Certifications'>
-        <Card
-          as='a'
-          heading='Lorem ipsum'
-          subheading='Lorem ipsum dolor sit amet, vidit suscipit at mei. Quem denique mea id. Usu ei regione indoctum dissentiunt, cu meliore fuisset mei, vel quod voluptua ne. Ex dicat impedit mel, at eum oratio possit voluptatum. Dicat ceteros cu vim. Impetus fuisset ullamcorper pri cu, his posse iisque ad, aliquam honestatis usu id.'
-          date='July 2024'
-          href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
-        />
-      </Section>
-
-      <Section title='Skills'>
-        <SkillLayout title='Languages' skills={languages} />
-        <SkillLayout title='Frontend' skills={frontend} />
-        <SkillLayout title='Backend' skills={backend} />
+      <!-- Experience -->
+      <Section title='Experience'>
+        <div class='relative border-s-2 border-border/50 ps-6'>
+          <div class='absolute -start-[9px] top-0 size-4 rounded-full border-2 border-primary/60 bg-background'></div>
+          <div class='rounded-xl border bg-card/50 p-4 sm:p-5'>
+            <div class='flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1'>
+              <div>
+                <div class='text-sm font-medium text-muted-foreground'>
+                  <span class='lang-en'>ByteDance</span>
+                  <span class='lang-zh hidden'>字节跳动</span>
+                </div>
+                <div class='mt-1 text-base font-medium'>
+                  <span class='lang-en'>Backend Development Intern</span>
+                  <span class='lang-zh hidden'>后端开发实习生</span>
+                </div>
+                <div class='mt-1 text-sm text-muted-foreground'>
+                  <span class='lang-en'>Shanghai, China</span>
+                  <span class='lang-zh hidden'>上海</span>
+                </div>
+              </div>
+              <span class='shrink-0 rounded-full border px-3 py-0.5 text-xs text-muted-foreground'>
+                <span class='lang-en'>May 2026 – Present</span>
+                <span class='lang-zh hidden'>2026.5 – 至今</span>
+              </span>
+            </div>
+          </div>
+        </div>
       </Section>
     </div>
+
     <Quote class='mt-12' />
   </main>
 </PageLayout>
+
+<script>
+  const LANG_KEY = 'site-lang'
+  const langs = ['en', 'zh']
+
+  function setLang(lang: string) {
+    document.documentElement.setAttribute('data-lang', lang)
+    localStorage.setItem(LANG_KEY, lang)
+
+    // Toggle visibility
+    document.querySelectorAll('.lang-en, .lang-zh').forEach((el) => {
+      const elLang = el.classList.contains('lang-en') ? 'en' : 'zh'
+      el.classList.toggle('hidden', elLang !== lang)
+    })
+
+    // Update button labels
+    document.querySelectorAll('.lang-label').forEach((label) => {
+      const labelLang = (label as HTMLElement).dataset.lang
+      label.classList.toggle('hidden', labelLang !== lang)
+    })
+  }
+
+  // Init
+  const saved = localStorage.getItem(LANG_KEY) || 'en'
+  setLang(saved)
+
+  // Toggle button
+  document.getElementById('lang-toggle')?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-lang') || 'en'
+    const next = current === 'en' ? 'zh' : 'en'
+    setLang(next)
+  })
+</script>
+
+<style>
+  #lang-toggle:hover {
+    border-color: hsl(var(--primary) / 0.5);
+  }
+</style>

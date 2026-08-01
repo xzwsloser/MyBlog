@@ -3,11 +3,11 @@ import type { CardListData, Config, IntegrationUserConfig, ThemeUserConfig } fro
 export const theme: ThemeUserConfig = {
   // [Basic]
   /** Title for your website. Will be used in metadata and as browser tab title. */
-  title: 'Astro Theme Pure',
+  title: 'Zhiwei Xiao',
   /** Will be used in index page & copyright declaration */
-  author: 'Pure Lab',
+  author: 'Zhiwei Xiao',
   /** Description metadata for your website. Can be used in page metadata. */
-  description: 'Stay hungry, stay foolish',
+  description: 'Student / Developer — Exploring AI Infra, Backend & LLMs 🚀',
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
   favicon: '/favicon/favicon.ico',
   /** The default social card image for your site which should be a path to an image in the `public/` directory. */
@@ -51,7 +51,6 @@ export const theme: ThemeUserConfig = {
       { title: 'Blog', link: '/blog' },
       { title: 'Docs', link: '/docs' },
       { title: 'Projects', link: '/projects' },
-      { title: 'Links', link: '/links' },
       { title: 'About', link: '/about' }
     ]
   },
@@ -79,7 +78,7 @@ export const theme: ThemeUserConfig = {
     credits: true,
     /** Optional details about the social media accounts for this site. */
     social: [
-      { icon: 'github', label: 'GitHub', href: 'https://github.com/cworld1/astro-theme-pure' },
+      { icon: 'github', label: 'GitHub', href: 'https://github.com/xzwsloser' },
       { icon: 'rss', label: 'RSS', href: '/rss.xml' }
     ]
   },
@@ -106,22 +105,8 @@ export const integ: IntegrationUserConfig = {
   // [Links]
   // https://astro-pure.js.org/docs/integrations/links
   links: {
-    // Friend logbook
-    logbook: [
-      { date: '2025-03-16', content: 'Is there a leakage?' },
-      { date: '2025-03-16', content: 'A leakage of what?' },
-      { date: '2025-03-16', content: 'I have a full seat of water, like, full of water!' },
-      { date: '2025-03-16', content: 'Must be the water.' },
-      { date: '2025-03-16', content: "Let's add that to the words of wisdom." }
-    ],
-    // Yourself link info
-    applyTip: [
-      { name: 'Name', val: theme.title },
-      { name: 'Desc', val: theme.description || 'Null' },
-      { name: 'Link', val: 'https://astro-pure.js.org/' },
-      { name: 'Avatar', val: 'https://astro-pure.js.org/favicon/favicon.ico' }
-    ],
-    // Cache avatars in `public/avatars/` to improve user experience.
+    logbook: [],
+    applyTip: [],
     cacheAvatar: false
   },
   // [Search]
@@ -175,9 +160,13 @@ export const integ: IntegrationUserConfig = {
       // search: false,
       pageview: true,
       comment: true,
+      // Waline 语言设置，控制 UI 文字和日期/时间格式化
+      // 可选值: 'zh-CN', 'zh-TW', 'en-US', 'jp', 'ko' 等
+      // 参考: https://waline.js.org/reference/client/props.html#lang
+      lang: 'zh-CN',
       locale: {
         reaction0: 'Like',
-        placeholder: 'Welcome to comment. (Email to receive replies. Login is unnecessary)'
+        placeholder: '欢迎评论～（输入邮箱可接收回复通知，无需登录）'
       },
       imageUploader: false
     }
