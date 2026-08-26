@@ -54,31 +54,83 @@ See [astro-theme-pure](https://www.npmjs.com/package/astro-pure) on npm.
 
 ## Local development
 
-Environment requirements:
+### Environment requirements
 
-- [Nodejs](https://nodejs.org/): 18.0.0+
+> [!WARNING]
+> Astro 6.0+ requires Node.js 22.12.0 or newer. Odd-numbered Node.js versions such as 23 are not supported by Astro.
 
-Clone the repository:
+You can choose one of the following methods for project development:
+
+- [Bun](https://bun.com/get)
+- [Node.js](https://nodejs.org/)
+
+
+For deployment methods using container like [Docker](https://docs.docker.com/get-started/get-docker) & [Docker Compose](https://docs.docker.com/compose/install), please refer the documention [Using Docker Compose](https://astro-pure.js.org/docs/setup/using-docker-compose).
+
+### Getting started
+
+1. Clone the repository and enter the directory:
+   ```shell
+   git clone https://github.com/cworld1/astro-theme-pure.git
+   cd astro-theme-pure
+   ```
+
+   Edit `src/site.config.ts` to customize the site.
+
+2. Install dependencies:
+   ```shell
+   bun install
+   ```
+
+3. Start the development server:
+   ```shell
+   bun dev
+   # or
+   pnpm dev
+   # or
+   yarn run dev
+   # or
+   npm run dev
+   ```
+
+   The development server runs at http://localhost:4321 by default.
+
+### Creating a new blog article
+
+After setting up either development environment, you can create a new blog article:
 
 ```shell
-git clone https://github.com/cworld1/astro-theme-pure.git
-cd astro-theme-pure
-```
-
-Useful commands:
-
-```shell
-# Install dependencies
-bun install
-# Start the dev server
-bun dev
-# Build the project
-bun run build
-# Preview (after the build)
-bun preview
-# Create a new post
 bun pure new
 ```
+
+## Deployment
+
+### Manual deployment
+
+Build the production site into the `./dist` directory:
+
+```shell
+bun run build
+```
+
+Once the build is complete, the generated static files will be located in the `./dist` directory. You can deploy this directory to any platform that supports static site hosting.
+
+Preview the production build locally:
+
+```shell
+bun preview
+```
+
+### Static hosting platforms
+
+You can deploy your blog to any static site hosting platform.
+
+- Refer to the official [Astro Deployment Guide](https://docs.astro.build/en/guides/deploy/) for specific deployment methods.
+- Depending on the deployment platform you choose, you may need to modify the `astro.config.ts` configuration file in the project.
+
+| Vercel | Netlify |
+| :---: | :---: |
+| [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcworld1%2Fastro-theme-pure) | [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/cworld1/astro-theme-pure) |
 
 ## Contributions
 
@@ -96,4 +148,4 @@ Other third party references are on [Docs#Contributions](https://astro-pure.js.o
 
 This project is licensed under the Apache 2.0 License.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=cworld1/astro-theme-pure&type=Date)](https://star-history.com/#cworld1/astro-theme-pure&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=cworld1/astro-theme-pure&type=Date)](https://star-history.dera.page/#cworld1/astro-theme-pure&Date)
