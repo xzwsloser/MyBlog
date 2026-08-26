@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ai_infra_get_start/index.md",
+                "file": "build_llm_from_zero/index.md",
                 "mode": "source",
                 "source": false
               },
@@ -187,8 +187,12 @@
   },
   "active": "23891b68f79ff299",
   "lastOpenFiles": [
-    "2026-08-02.md",
+    "deeplearning_review/index.md",
+    "build_llm_from_zero/index.md",
+    "deeplearning_review",
     "ai_infra_get_start/index.md",
+    "build_llm_from_zero",
+    "2026-08-02.md",
     "markdown-syntax-test/index.md",
     "ai_infra_get_start"
   ]

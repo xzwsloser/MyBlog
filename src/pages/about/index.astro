@@ -1,63 +1,916 @@
 ---
-import PageLayout from '@/layouts/CommonPage.astro'
+import { ArrowLeft, ArrowUpRight, Github, Printer } from 'lucide-astro'
 
-const headings: { depth: number; slug: string; text: string }[] = []
+import PageLayout from '@/layouts/BaseLayout.astro'
+
+import { resume } from '../../data/resume'
+
+const rankPercent = ((resume.education.rank.position / resume.education.rank.total) * 100).toFixed(
+  1
+)
 ---
 
-<PageLayout title='About' {headings}>
-  <div class='mb-4 flex justify-end'>
-    <button
-      id='lang-toggle'
-      class='inline-flex items-center gap-1 rounded-full border bg-background px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm transition hover:border-primary/50 hover:text-foreground'
-      aria-label='Toggle language'
-    >
-      <span class='lang-label' data-lang='en'>EN</span>
-      <span class='lang-label hidden' data-lang='zh'>中文</span>
-      <span class='text-[10px]'>/</span>
-    </button>
-  </div>
+<PageLayout
+  meta={{
+    title: 'Resume',
+    description: `${resume.name}的个人简历。`
+  }}
+>
+  <main class='resume-page'>
+    <nav class='resume-toolbar' aria-label='简历操作'>
+      <a class='toolbar-action' href='/'>
+        <ArrowLeft aria-hidden='true' size={17} />
+        <span>返回首页</span>
+      </a>
 
-  <p class='lang-en'>
-    Student and developer, currently diving into AI Infrastructure, LLMs / Multi-modal,
-    Agent architectures, and backend system design. Passionate about low-level computer
-    systems and the engineering behind large-scale AI — always learning, always building.
-  </p>
-  <p class='lang-zh hidden'>
-    学生 / 开发者，正在学习 AI Infra、大模型 / 多模态、Agent、后端架构设计等技术，
-    对计算机底层技术感兴趣，持续学习与探索中。
-  </p>
+      <button class='toolbar-action' id='print-resume' type='button'>
+        <Printer aria-hidden='true' size={17} />
+        <span>打印 / 导出 PDF</span>
+      </button>
+    </nav>
+
+    <article class='resume-sheet' id='resume-document'>
+      <div class='resume-header'>
+        <h1>{resume.name}</h1>
+
+        <address class='contact-list'>
+          {
+            resume.contacts.map((contact) => {
+              const content = (
+                <>
+                  <i class={`codecv-icon icon-${contact.icon}`} aria-hidden='true' />
+                  <span>{contact.value}</span>
+                </>
+              )
+
+              return contact.href ? (
+                <a
+                  class='contact-item'
+                  href={contact.href}
+                  aria-label={`${contact.label}：${contact.value}`}
+                  target={contact.href.startsWith('http') ? '_blank' : undefined}
+                  rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                >
+                  {content}
+                </a>
+              ) : (
+                <span class='contact-item' aria-label={`${contact.label}：${contact.value}`}>
+                  {content}
+                </span>
+              )
+            })
+          }
+          <span class='contact-item' aria-label={`所在地：${resume.location}`}>
+            <i class='codecv-icon icon-location' aria-hidden='true'></i>
+            <span>{resume.location}</span>
+          </span>
+        </address>
+      </div>
+
+      <section class='resume-section' aria-labelledby='education-title'>
+        <h2 id='education-title'>教育背景</h2>
+        <div class='education-entry'>
+          <div class='education-primary'>
+            <img
+              class='school-emblem'
+              src='/images/hust-emblem.png'
+              alt='华中科技大学校徽'
+              width='128'
+              height='128'
+            />
+            <div>
+              <h3>
+                {resume.education.school}
+                <span class='school-level'>（{resume.education.badges.join(' / ')}）</span>
+              </h3>
+              <p>
+                {resume.education.college} · {resume.education.major} · {resume.education.degree}
+              </p>
+            </div>
+          </div>
+          <time>{resume.education.period}</time>
+        </div>
+
+        <div class='education-details'>
+          <p class='rank-line'>
+            <strong>加权排名：</strong>
+            <span>
+              {resume.education.rank.position} / {resume.education.rank.total}（前 {rankPercent}%）
+            </span>
+          </p>
+
+          <div class='coursework'>
+            <p class='coursework-title'>相关课程：</p>
+            <div class='course-list'>
+              {
+                resume.education.courses.map((course) => (
+                  <span class='course-item'>
+                    {course.name}（<strong>{course.score}</strong>）
+                  </span>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class='resume-section' aria-labelledby='internship-title'>
+        <h2 id='internship-title'>实习经历</h2>
+        <div class='internship-heading'>
+          <div>
+            <h3 class='company-name'>
+              <i class='codecv-icon icon-bytedance' aria-hidden='true'></i>
+              <span>{resume.internship.company}</span>
+            </h3>
+            <p>{resume.internship.department}</p>
+          </div>
+          <time>{resume.internship.period}</time>
+        </div>
+
+        <div class='internship-project-list'>
+          {
+            resume.internship.projects.map((project) => (
+              <section class='internship-project'>
+                <div class='internship-project-heading'>
+                  <h4>{project.name}</h4>
+                  <span>
+                    <strong>参与程度：</strong>
+                    {project.participation}
+                  </span>
+                </div>
+                <p class='internship-description'>{project.description}</p>
+                <ol class='internship-highlights'>
+                  {project.highlights.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ol>
+              </section>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class='resume-section' aria-labelledby='skills-title'>
+        <h2 id='skills-title'>专业技能</h2>
+        <ul class='skill-list'>
+          {
+            resume.skills.map((skill) => (
+              <li>
+                <strong>{skill.label}：</strong>
+                {skill.content}
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class='resume-section' aria-labelledby='projects-title'>
+        <h2 id='projects-title'>项目经历</h2>
+        <div class='project-list'>
+          {
+            resume.projects.map((project) => (
+              <section class='project-entry'>
+                <div class='project-heading'>
+                  <h3>{project.name}</h3>
+                  <span>{project.role}</span>
+                </div>
+
+                <p class='project-meta'>
+                  <strong>技术栈：</strong>
+                  {project.stack.join(' / ')}
+                </p>
+                <p class='project-description'>
+                  <strong>项目简介：</strong>
+                  {project.description}
+                </p>
+                <p class='work-label'>
+                  <strong>个人工作：</strong>
+                </p>
+                <ol class='project-highlights'>
+                  {project.highlights.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ol>
+
+                <a
+                  class='project-link'
+                  href={project.href}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <Github aria-hidden='true' size={14} />
+                  <span>{project.href.replace('https://', '')}</span>
+                  <ArrowUpRight aria-hidden='true' size={13} />
+                </a>
+              </section>
+            ))
+          }
+        </div>
+      </section>
+    </article>
+  </main>
 </PageLayout>
 
 <script>
-  const LANG_KEY = 'site-lang'
-
-  function setLang(lang: string) {
-    document.documentElement.setAttribute('data-lang', lang)
-    localStorage.setItem(LANG_KEY, lang)
-
-    document.querySelectorAll('.lang-en, .lang-zh').forEach((el) => {
-      const elLang = el.classList.contains('lang-en') ? 'en' : 'zh'
-      el.classList.toggle('hidden', elLang !== lang)
-    })
-
-    document.querySelectorAll('.lang-label').forEach((label) => {
-      const labelLang = (label as HTMLElement).dataset.lang
-      label.classList.toggle('hidden', labelLang !== lang)
-    })
-  }
-
-  const saved = localStorage.getItem(LANG_KEY) || 'en'
-  setLang(saved)
-
-  document.getElementById('lang-toggle')?.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-lang') || 'en'
-    const next = current === 'en' ? 'zh' : 'en'
-    setLang(next)
-  })
+  document.getElementById('print-resume')?.addEventListener('click', () => window.print())
 </script>
 
 <style>
-  #lang-toggle:hover {
-    border-color: hsl(var(--primary) / 0.5);
+  @font-face {
+    font-family: 'codecv-iconfont';
+    src: url('/fonts/codecv-iconfont.woff2') format('woff2');
+    font-display: block;
+    font-style: normal;
+    font-weight: normal;
+  }
+
+  .resume-page {
+    width: 100%;
+    max-width: 58rem;
+    margin: 0 auto;
+  }
+
+  .resume-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .toolbar-action {
+    display: inline-flex;
+    min-height: 2.25rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid hsl(var(--border) / 1);
+    border-radius: 5px;
+    background: hsl(var(--background) / 1);
+    color: hsl(var(--muted-foreground) / 1);
+    font: inherit;
+    font-size: 0.8rem;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      border-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .toolbar-action:hover {
+    border-color: hsl(var(--primary) / 0.6);
+    color: hsl(var(--foreground) / 1);
+  }
+
+  .resume-sheet {
+    width: 100%;
+    padding: 2.8rem 3.25rem 3.2rem;
+    border: 1px solid #d7d7d7;
+    border-radius: 2px;
+    background: #fff;
+    box-shadow: 0 12px 35px rgb(0 0 0 / 8%);
+    color: #202020;
+    font-family: 'Times New Roman', 'Noto Serif SC', 'Songti SC', STSong, serif;
+    font-size: 0.92rem;
+    line-height: 1.62;
+  }
+
+  .resume-header {
+    padding-bottom: 1.25rem;
+    border-bottom: 3px double #8b8b8b;
+    text-align: center;
+  }
+
+  .resume-header h1 {
+    margin: 0;
+    color: #355b87;
+    font-size: 2.15rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    row-gap: 0.45rem;
+    margin: 0.85rem 0 0;
+    color: #333;
+    font-style: normal;
+  }
+
+  .contact-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    padding: 0 0.72rem;
+    color: #333;
+    font-family: Arial, Helvetica, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    font-size: 0.76rem;
+    font-variant-numeric: normal;
+    font-feature-settings: normal;
+    font-weight: 400;
+    line-height: 1.2;
+    text-decoration: none;
+  }
+
+  .contact-item + .contact-item {
+    border-left: 1px solid #bcbcbc;
+  }
+
+  .codecv-icon {
+    flex: none;
+    color: #4c6480;
+    font-family: 'codecv-iconfont' !important;
+    font-size: 1rem;
+    font-style: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .icon-email::before {
+    content: '\e712';
+  }
+
+  .icon-wechat::before {
+    content: '\e619';
+  }
+
+  .icon-github::before {
+    content: '\e8c6';
+  }
+
+  .icon-link::before {
+    content: '\e7e2';
+  }
+
+  .icon-location::before {
+    content: '\e790';
+  }
+
+  .icon-bytedance::before {
+    content: '\e682';
+  }
+
+  .icon-wechat {
+    color: #1f9d49;
+  }
+
+  a.contact-item:hover {
+    color: #224b8d;
+    text-decoration: underline;
+    text-underline-offset: 0.18rem;
+  }
+
+  .resume-section {
+    margin-top: 1.55rem;
+  }
+
+  .resume-section > h2 {
+    margin: 0 0 0.85rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid #9fa8b2;
+    color: #355b87;
+    font-size: 1.08rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  .education-entry,
+  .project-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+
+  .education-primary {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .school-emblem {
+    width: 2.65rem;
+    height: 2.65rem;
+    flex: none;
+    object-fit: contain;
+  }
+
+  .education-entry h3,
+  .project-heading h3 {
+    margin: 0;
+    color: #202020;
+    font-size: 0.94rem;
+    font-weight: 700;
+    line-height: 1.45;
+    letter-spacing: 0;
+  }
+
+  .school-level {
+    color: #555;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.78rem;
+    font-variant-numeric: normal;
+    font-feature-settings: normal;
+    font-weight: 400;
+  }
+
+  .education-entry p,
+  .education-entry time {
+    margin: 0.2rem 0 0;
+    color: #444;
+    font-size: 0.82rem;
+  }
+
+  .education-entry time,
+  .project-heading > span {
+    flex: none;
+  }
+
+  .education-entry time {
+    font-family: Arial, Helvetica, sans-serif;
+    font-variant-numeric: normal;
+    font-feature-settings: normal;
+  }
+
+  .education-details {
+    margin: 0.8rem 0 0 3.45rem;
+    padding-top: 0.65rem;
+    border-top: 1px dotted #b5b5b5;
+  }
+
+  .rank-line,
+  .coursework-title {
+    margin: 0;
+    color: #333;
+    font-size: 0.82rem;
+  }
+
+  .rank-line span,
+  .course-item strong {
+    font-family: Arial, Helvetica, sans-serif;
+    font-variant-numeric: normal;
+    font-feature-settings: normal;
+  }
+
+  .coursework {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.55rem;
+    margin-top: 0.55rem;
+  }
+
+  .coursework-title {
+    white-space: nowrap;
+    font-weight: 700;
+  }
+
+  .course-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.12rem 0;
+    color: #333;
+    font-size: 0.78rem;
+  }
+
+  .course-item + .course-item::before {
+    margin: 0 0.5rem;
+    color: #929292;
+    content: '·';
+  }
+
+  .course-item strong {
+    font-weight: 600;
+  }
+
+  .internship-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1.25rem;
+  }
+
+  .company-name {
+    display: flex;
+    align-items: center;
+    gap: 0.48rem;
+    margin: 0;
+    color: #202020;
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: 0;
+  }
+
+  .company-name .icon-bytedance {
+    color: #315ab4;
+    background: linear-gradient(90deg, #315ab4 0%, #3b82f6 38%, #0dc9d3 68%, #70d6c9 100%);
+    background-clip: text;
+    font-size: 1.1rem;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .internship-heading p,
+  .internship-heading time {
+    margin: 0.22rem 0 0;
+    color: #444;
+    font-size: 0.82rem;
+  }
+
+  .internship-heading time {
+    flex: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-variant-numeric: normal;
+    font-feature-settings: normal;
+  }
+
+  .internship-project-list {
+    margin-top: 0.85rem;
+  }
+
+  .internship-project {
+    padding-left: 0.85rem;
+    border-left: 2px solid #a8b4c2;
+    break-inside: auto;
+  }
+
+  .internship-project + .internship-project {
+    margin-top: 1rem;
+  }
+
+  .internship-project-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    break-after: avoid;
+  }
+
+  .internship-project-heading h4 {
+    margin: 0;
+    color: #2e4f75;
+    font-size: 0.91rem;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0;
+  }
+
+  .internship-project-heading > span {
+    flex: none;
+    color: #555;
+    font-size: 0.75rem;
+  }
+
+  .internship-description {
+    margin: 0.35rem 0 0;
+    color: #333;
+    font-size: 0.82rem;
+  }
+
+  .internship-highlights {
+    margin: 0.3rem 0 0;
+    padding-left: 1.25rem;
+    color: #303030;
+    font-size: 0.82rem;
+    line-height: 1.58;
+    list-style-type: decimal;
+  }
+
+  .internship-highlights li {
+    padding-left: 0.2rem;
+    break-inside: avoid;
+  }
+
+  .internship-highlights li + li {
+    margin-top: 0.3rem;
+  }
+
+  .internship-highlights li::marker {
+    color: #303030;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+  }
+
+  .skill-list,
+  .project-highlights {
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+
+  .skill-list {
+    list-style-type: square;
+  }
+
+  .skill-list li,
+  .project-highlights li {
+    padding-left: 0.2rem;
+  }
+
+  .skill-list li + li,
+  .project-highlights li + li {
+    margin-top: 0.34rem;
+  }
+
+  .skill-list li::marker,
+  .project-highlights li::marker {
+    color: #526f90;
+    font-weight: 700;
+  }
+
+  .skill-list strong,
+  .project-meta strong,
+  .project-description strong,
+  .work-label strong {
+    color: #1f1f1f;
+  }
+
+  .project-entry {
+    break-inside: auto;
+  }
+
+  .project-entry + .project-entry {
+    margin-top: 1.3rem;
+    padding-top: 1.15rem;
+    border-top: 1px dotted #aaa;
+  }
+
+  .project-heading {
+    break-after: avoid;
+  }
+
+  .project-heading h3 {
+    color: #2e4f75;
+    font-size: 0.98rem;
+  }
+
+  .project-heading > span {
+    color: #444;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .project-meta,
+  .project-description,
+  .work-label {
+    margin: 0.45rem 0 0;
+    color: #333;
+    font-size: 0.84rem;
+  }
+
+  .project-description {
+    margin-top: 0.25rem;
+  }
+
+  .work-label {
+    margin-top: 0.3rem;
+  }
+
+  .project-highlights {
+    margin-top: 0.25rem;
+    font-size: 0.82rem;
+    line-height: 1.58;
+  }
+
+  .project-highlights li {
+    break-inside: avoid;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    max-width: 100%;
+    margin-top: 0.55rem;
+    color: #224b8d;
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+    font-size: 0.72rem;
+    text-decoration: none;
+  }
+
+  .project-link span {
+    overflow-wrap: anywhere;
+  }
+
+  .project-link:hover span {
+    text-decoration: underline;
+    text-underline-offset: 0.18rem;
+  }
+
+  @media (max-width: 700px) {
+    .resume-sheet {
+      padding: 2rem 1.25rem 2.4rem;
+      font-size: 0.88rem;
+    }
+
+    .resume-header h1 {
+      font-size: 1.85rem;
+    }
+
+    .contact-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      text-align: left;
+    }
+
+    .contact-item {
+      min-width: 0;
+      padding: 0.2rem 0.3rem;
+    }
+
+    .contact-item + .contact-item {
+      border-left: 0;
+    }
+
+    .contact-item span {
+      overflow-wrap: anywhere;
+    }
+
+    .education-entry,
+    .internship-heading,
+    .internship-project-heading,
+    .project-heading {
+      align-items: flex-start;
+    }
+
+    .education-details {
+      margin-left: 0;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .toolbar-action {
+      min-width: 2.25rem;
+      padding-inline: 0.58rem;
+    }
+
+    .toolbar-action span {
+      display: none;
+    }
+
+    .resume-sheet {
+      padding-inline: 1rem;
+    }
+
+    .contact-list {
+      grid-template-columns: 1fr;
+    }
+
+    .education-entry,
+    .internship-heading,
+    .internship-project-heading,
+    .project-heading {
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .coursework {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+  }
+
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    :global(html) {
+      color-scheme: light;
+    }
+
+    :global(body) {
+      display: block !important;
+      background: #fff !important;
+      color: #202020 !important;
+      print-color-adjust: exact;
+      -webkit-print-color-adjust: exact;
+    }
+
+    :global(header-component),
+    :global(footer),
+    .resume-toolbar {
+      display: none !important;
+    }
+
+    :global(#main-container) {
+      display: block !important;
+      max-width: none !important;
+      min-height: auto !important;
+      padding: 0 !important;
+    }
+
+    .resume-page {
+      max-width: none;
+      margin: 0;
+    }
+
+    .resume-sheet {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0;
+      padding: 11mm 14mm 12mm;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      font-size: 9pt;
+      line-height: 1.45;
+    }
+
+    .resume-header {
+      padding-bottom: 4mm;
+    }
+
+    .resume-header h1 {
+      font-size: 23pt;
+    }
+
+    .contact-list {
+      margin-top: 3mm;
+      row-gap: 1.5mm;
+    }
+
+    .contact-item {
+      font-size: 7.5pt;
+    }
+
+    .resume-section {
+      margin-top: 4mm;
+    }
+
+    .resume-section > h2 {
+      margin-bottom: 2.5mm;
+      padding-bottom: 1mm;
+      font-size: 11pt;
+      break-after: avoid;
+    }
+
+    .education-entry h3,
+    .company-name,
+    .internship-project-heading h4,
+    .project-heading h3 {
+      font-size: 9pt;
+    }
+
+    .school-emblem {
+      width: 9mm;
+      height: 9mm;
+    }
+
+    .company-name .icon-bytedance {
+      background: none;
+      color: #355b87;
+      -webkit-text-fill-color: currentColor;
+    }
+
+    .education-details {
+      margin-top: 2.5mm;
+      margin-left: 11.5mm;
+      padding-top: 2mm;
+    }
+
+    .education-entry p,
+    .education-entry time,
+    .rank-line,
+    .coursework-title,
+    .course-list,
+    .internship-heading p,
+    .internship-heading time,
+    .internship-project-heading > span,
+    .internship-description,
+    .internship-highlights,
+    .project-heading > span,
+    .project-meta,
+    .project-description,
+    .work-label,
+    .project-highlights,
+    .skill-list {
+      font-size: 8pt;
+    }
+
+    .project-entry + .project-entry {
+      margin-top: 3mm;
+      padding-top: 3mm;
+    }
+
+    .project-link {
+      margin-top: 1.5mm;
+      font-size: 7pt;
+    }
   }
 </style>
