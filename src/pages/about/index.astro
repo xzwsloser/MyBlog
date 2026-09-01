@@ -157,7 +157,15 @@ const rankPercent = ((resume.education.rank.position / resume.education.rank.tot
             resume.skills.map((skill) => (
               <li>
                 <strong>{skill.label}：</strong>
-                {skill.content}
+                {skill.items && skill.items.length > 0 ? (
+                  <ul class='skill-sublist'>
+                    {skill.items.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  skill.content
+                )}
               </li>
             ))
           }
@@ -172,7 +180,7 @@ const rankPercent = ((resume.education.rank.position / resume.education.rank.tot
               <section class='project-entry'>
                 <div class='project-heading'>
                   <h3>{project.name}</h3>
-                  <span>{project.role}</span>
+                  {project.role && <span>{project.role}</span>}
                 </div>
 
                 <p class='project-meta'>
@@ -192,16 +200,18 @@ const rankPercent = ((resume.education.rank.position / resume.education.rank.tot
                   ))}
                 </ol>
 
-                <a
-                  class='project-link'
-                  href={project.href}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  <Github aria-hidden='true' size={14} />
-                  <span>{project.href.replace('https://', '')}</span>
-                  <ArrowUpRight aria-hidden='true' size={13} />
-                </a>
+                {project.href && (
+                  <a
+                    class='project-link'
+                    href={project.href}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    <Github aria-hidden='true' size={14} />
+                    <span>{project.href.replace('https://', '')}</span>
+                    <ArrowUpRight aria-hidden='true' size={13} />
+                  </a>
+                )}
               </section>
             ))
           }
@@ -607,6 +617,20 @@ const rankPercent = ((resume.education.rank.position / resume.education.rank.tot
     padding-left: 1.25rem;
   }
 
+  .skill-sublist {
+    margin: 0.28rem 0 0;
+    padding-left: 1.1rem;
+    list-style-type: disc;
+  }
+
+  .skill-sublist li + li {
+    margin-top: 0.26rem;
+  }
+
+  .skill-sublist li::marker {
+    color: #7d95ae;
+  }
+
   .skill-list {
     list-style-type: square;
   }
@@ -679,6 +703,7 @@ const rankPercent = ((resume.education.rank.position / resume.education.rank.tot
     margin-top: 0.25rem;
     font-size: 0.82rem;
     line-height: 1.58;
+    list-style-type: decimal;
   }
 
   .project-highlights li {
