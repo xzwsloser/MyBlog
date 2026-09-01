@@ -37,6 +37,11 @@ export interface ResumeProject {
   highlights: string[]
 }
 
+export interface ResumeAward {
+  /** 奖项全称 */
+  content: string
+}
+
 export const resume = {
   name: 'ZhiWei Xiao',
   location: '武汉，中国',
@@ -44,8 +49,8 @@ export const resume = {
     {
       icon: 'email',
       label: '邮箱',
-      value: 'u202314382@hust.edu.cn',
-      href: 'mailto:u202314382@hust.edu.cn'
+      value: 'xiaozhiwei.tech@qq.com',
+      href: 'mailto:xiaozhiwei.tech@qq.com'
     },
     {
       icon: 'wechat',
@@ -200,5 +205,11 @@ export const resume = {
         '完成多核并发下的锁优化（lock）、网络设备驱动（net）与 mmap 文件映射（mmap）实验，理解并行与 I/O 子系统。'
       ]
     }
-  ] satisfies ResumeProject[]
+  ] satisfies ResumeProject[],
+  awards: [
+    { content: '2024/2025 学习优秀奖学金' },
+    { content: '第十六届全国大学生数学竞赛省级一等奖' },
+    { content: '第十七届全国大学生数学竞赛省级三等奖' },
+    { content: '第十三届大学生新一代信息通信科技大赛工程实践赛道（大唐杯）省二等奖' }
+  ] satisfies ResumeAward[]
 } as const

@@ -217,6 +217,20 @@ const rankPercent = ((resume.education.rank.position / resume.education.rank.tot
           }
         </div>
       </section>
+
+      <section class='resume-section' aria-labelledby='awards-title'>
+        <h2 id='awards-title'>荣誉奖励</h2>
+        <ul class='award-list'>
+          {
+            resume.awards.map((award) => (
+              <li>
+                <span class='award-badge' aria-hidden='true' />
+                <span>{award.content}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
     </article>
   </main>
 </PageLayout>
@@ -734,6 +748,53 @@ const rankPercent = ((resume.education.rank.position / resume.education.rank.tot
   .project-link:hover span {
     text-decoration: underline;
     text-underline-offset: 0.18rem;
+  }
+
+  .award-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .award-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    color: #303030;
+    font-size: 0.84rem;
+    line-height: 1.55;
+  }
+
+  .award-list li + li {
+    margin-top: 0.3rem;
+  }
+
+  .award-badge {
+    width: 0.45rem;
+    height: 0.45rem;
+    flex: none;
+    border-radius: 9999px;
+    background: #526f90;
+    transform: translateY(-1px);
+  }
+
+  @media print {
+    .award-list {
+      font-size: 8pt;
+    }
+
+    .award-list li {
+      line-height: 1.5;
+    }
+
+    .award-list li + li {
+      margin-top: 1mm;
+    }
+
+    .award-badge {
+      width: 1.3mm;
+      height: 1.3mm;
+    }
   }
 
   @media (max-width: 700px) {
