@@ -42,6 +42,13 @@ export interface ResumeAward {
   content: string
 }
 
+export interface ResumeSummary {
+  /** 个人评价正文（段落式），与 items 二选一 */
+  content?: string
+  /** 分点式要点（列表渲染），优先生效 */
+  items?: string[]
+}
+
 export const resume = {
   name: 'ZhiWei Xiao',
   location: '武汉，中国',
@@ -211,5 +218,12 @@ export const resume = {
     { content: '第十六届全国大学生数学竞赛省级一等奖' },
     { content: '第十七届全国大学生数学竞赛省级三等奖' },
     { content: '第十三届大学生新一代信息通信科技大赛工程实践赛道（大唐杯）省二等奖' }
-  ] satisfies ResumeAward[]
+  ] satisfies ResumeAward[],
+  summary: {
+    items: [
+      '具备出色的学习能力与自驱力，面对陌生领域能迅速梳理出清晰的学习路线，并循序渐进地系统掌握相关知识。',
+      '技术驱动力强，对新技术的演进保持敏锐与好奇，乐于主动探索并将其落地到实际项目中验证价值。',
+      '工程与编码功底扎实，在「古法编程」的资源受限条件下也能独立从 0 到 1 手搓复杂项目，打通前后端、算法与硬件，实现端到端的完整闭环。'
+    ]
+  } satisfies ResumeSummary
 } as const
