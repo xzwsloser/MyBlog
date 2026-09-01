@@ -225,5 +225,5 @@ export const resume = {
       '技术驱动力强，对新技术的演进保持敏锐与好奇，乐于主动探索并将其落地到实际项目中验证价值。',
       '工程与编码功底扎实，在「古法编程」的资源受限条件下也能独立从 0 到 1 手搓复杂项目，打通前后端、算法与硬件，实现端到端的完整闭环。'
     ]
-  } satisfies ResumeSummary
-} as const
+  } as ResumeSummary
+}
