@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets'
-
 import { Quote } from 'astro-pure/advanced'
 import { PostPreview } from 'astro-pure/components/pages'
 import { getBlogCollection, sortMDByDate } from 'astro-pure/server'
@@ -13,45 +11,32 @@ const MAX_POSTS = 10
 const allPosts = await getBlogCollection()
 const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 
-const imagePath = config.logo.src
-const images = import.meta.glob<{ default: ImageMetadata }>(
-  '/src/assets/*.{jpeg,jpg,png,gif,avif,webp}'
-)
-if (!images[imagePath])
-  throw new Error(
-    `"${imagePath}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif,avif,webp}"`
-  )
 ---
 
-<PageLayout meta={{ title: 'Home' }} highlightColor='#659EB9'>
+<PageLayout meta={{ title: 'Home' }} highlightColor='#7C5CFF'>
   <main class='flex w-full flex-col items-center'>
     <section class='animate mb-10 flex flex-col items-center gap-y-7' id='content-header'>
-      <Image
-        src={images[imagePath]()}
-        alt={config.logo.alt || 'Profile'}
-        class='h-28 w-auto rounded-full border p-1'
-        loading='eager'
-        fetchpriority='high'
-      />
-
       <div class='flex flex-col items-center gap-y-4'>
         <h1 class='text-4xl font-semibold tracking-tight sm:text-5xl'>
-          <span class='bg-gradient-to-br from-primary to-[hsl(200,40%,55%)] bg-clip-text text-transparent dark:from-[hsl(195,95%,75%)] dark:to-[hsl(195,80%,85%)]'>{config.author}</span>
+          <span
+            class='bg-clip-text text-transparent'
+            style='background-image:linear-gradient(120deg,hsl(var(--primary)),hsl(var(--accent)))'
+          >
+            {config.author}
+          </span>
         </h1>
         <p class='max-w-md text-center text-sm leading-relaxed text-muted-foreground'>
           <span class='lang-en'>Exploring AI Infra, LLMs, and Backend Systems</span>
           <span class='lang-zh hidden'>探索 AI Infra、大模型与后端系统</span>
         </p>
         <div class='flex flex-wrap items-center justify-center gap-x-5 gap-y-3'>
-          <Label title='Wuhan, China'>
-            <Icon name='location' class='size-5' slot='icon' />
-          </Label>
           <Label title='GitHub' as='a' href='https://github.com/xzwsloser' target='_blank'>
             <Icon name='github' class='size-5' slot='icon' />
           </Label>
           <!-- Language toggle -->
           <button
             id='lang-toggle'
+            data-lang-toggle
             class='inline-flex items-center gap-1 rounded-full border bg-background px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm transition hover:border-primary/50 hover:text-foreground'
             aria-label='Toggle language'
           >
@@ -109,101 +94,11 @@ if (!images[imagePath])
         )
       }
 
-      <!-- Education -->
-      <Section title='Education' class='animate' style='animation-delay:200ms'>
-        <div class='relative border-s-2 border-border/50 ps-6'>
-          <div class='absolute -start-[9px] top-0 size-4 rounded-full border-2 border-primary/60 bg-background transition-colors duration-500 hover:border-primary'></div>
-          <div class='rounded-xl border bg-card/50 p-4 transition-shadow duration-300 hover:shadow-md sm:p-5'>
-            <div class='flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1'>
-              <div>
-                <div class='text-sm font-medium text-muted-foreground'>
-                  <span class='lang-en'>Huazhong University of Science & Technology</span>
-                  <span class='lang-zh hidden'>华中科技大学</span>
-                </div>
-                <div class='mt-1 text-base font-medium'>
-                  <span class='lang-en'>B.E. in Communication Engineering</span>
-                  <span class='lang-zh hidden'>通信工程 本科</span>
-                </div>
-                <div class='mt-1 text-sm text-muted-foreground'>
-                  <span class='lang-en'>School of EIC · Wuhan, Hubei</span>
-                  <span class='lang-zh hidden'>电子信息与通信学院 · 湖北武汉</span>
-                </div>
-              </div>
-              <span class='shrink-0 rounded-full border px-3 py-0.5 text-xs text-muted-foreground'>
-                <span class='lang-en'>Sep 2023 – Present</span>
-                <span class='lang-zh hidden'>2023.9 – 至今</span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      <!-- Experience -->
-      <Section title='Experience' class='animate' style='animation-delay:250ms'>
-        <div class='relative border-s-2 border-border/50 ps-6'>
-          <div class='absolute -start-[9px] top-0 size-4 rounded-full border-2 border-primary/60 bg-background transition-colors duration-500 hover:border-primary'></div>
-          <div class='rounded-xl border bg-card/50 p-4 transition-shadow duration-300 hover:shadow-md sm:p-5'>
-            <div class='flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1'>
-              <div>
-                <div class='text-sm font-medium text-muted-foreground'>
-                  <span class='lang-en'>ByteDance</span>
-                  <span class='lang-zh hidden'>字节跳动</span>
-                </div>
-                <div class='mt-1 text-base font-medium'>
-                  <span class='lang-en'>Backend Development Intern</span>
-                  <span class='lang-zh hidden'>后端开发实习生</span>
-                </div>
-                <div class='mt-1 text-sm text-muted-foreground'>
-                  <span class='lang-en'>Shanghai, China</span>
-                  <span class='lang-zh hidden'>上海</span>
-                </div>
-              </div>
-              <span class='shrink-0 rounded-full border px-3 py-0.5 text-xs text-muted-foreground'>
-                <span class='lang-en'>May 2026 – Present</span>
-                <span class='lang-zh hidden'>2026.5 – 至今</span>
-              </span>
-            </div>
-          </div>
-        </div>
-      </Section>
     </div>
 
     <Quote class='mt-12' />
   </main>
 </PageLayout>
-
-<script>
-  const LANG_KEY = 'site-lang'
-  const langs = ['en', 'zh']
-
-  function setLang(lang: string) {
-    document.documentElement.setAttribute('data-lang', lang)
-    localStorage.setItem(LANG_KEY, lang)
-
-    // Toggle visibility
-    document.querySelectorAll('.lang-en, .lang-zh').forEach((el) => {
-      const elLang = el.classList.contains('lang-en') ? 'en' : 'zh'
-      el.classList.toggle('hidden', elLang !== lang)
-    })
-
-    // Update button labels
-    document.querySelectorAll('.lang-label').forEach((label) => {
-      const labelLang = (label as HTMLElement).dataset.lang
-      label.classList.toggle('hidden', labelLang !== lang)
-    })
-  }
-
-  // Init
-  const saved = localStorage.getItem(LANG_KEY) || 'en'
-  setLang(saved)
-
-  // Toggle button
-  document.getElementById('lang-toggle')?.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-lang') || 'en'
-    const next = current === 'en' ? 'zh' : 'en'
-    setLang(next)
-  })
-</script>
 
 <style>
   #lang-toggle:hover {

@@ -4,6 +4,8 @@ import Footer from '@/components/custom/Footer.astro'
 import type { SiteMeta } from 'astro-pure/types'
 import BaseHead from '@/components/BaseHead.astro'
 import config from '@/site-config'
+import Backdrop from '@/components/custom/Backdrop.astro'
+import WhalePet from '@/components/custom/WhalePet.astro'
 
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseLayout /> component.
@@ -30,6 +32,7 @@ const {
   </head>
 
   <body class='flex justify-center bg-background text-foreground' {...props}>
+    <Backdrop />
     {
       highlightColor && (
         <div
@@ -49,6 +52,35 @@ const {
       </div>
       <Footer />
     </div>
+    <WhalePet />
+
+    <script>
+      const LANG_KEY = 'site-lang'
+
+      function applySiteLanguage(lang: string) {
+        document.documentElement.setAttribute('data-lang', lang)
+        document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en-US'
+        localStorage.setItem(LANG_KEY, lang)
+
+        document.querySelectorAll('.lang-en, .lang-zh').forEach((element) => {
+          const elementLang = element.classList.contains('lang-en') ? 'en' : 'zh'
+          element.classList.toggle('hidden', elementLang !== lang)
+        })
+
+        document.querySelectorAll<HTMLElement>('.lang-label').forEach((label) => {
+          label.classList.toggle('hidden', label.dataset.lang !== lang)
+        })
+      }
+
+      applySiteLanguage(localStorage.getItem(LANG_KEY) || 'en')
+
+      document.querySelectorAll<HTMLButtonElement>('[data-lang-toggle]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const current = document.documentElement.getAttribute('data-lang') || 'en'
+          applySiteLanguage(current === 'en' ? 'zh' : 'en')
+        })
+      })
+    </script>
 
     {/* Set highlight color */}
     <style define:vars={{ highlightColor }}>

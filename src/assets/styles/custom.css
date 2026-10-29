@@ -5,6 +5,18 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Glass layout refinement */
+#main-container {
+  position: relative;
+  z-index: 1;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.035em;
+}
+
 /* Selection color */
 ::selection {
   background-color: hsl(var(--primary) / 0.15);
@@ -112,6 +124,21 @@ html {
 }
 .post-preview:hover {
   transform: translateX(4px);
+}
+
+/* Cards and sections inherit the new visual language */
+.not-prose > .rounded-xl,
+.not-prose > .rounded-2xl {
+  background-color: hsl(var(--card) / 0.66);
+  backdrop-filter: blur(18px);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.not-prose > .rounded-xl:hover,
+.not-prose > .rounded-2xl:hover {
+  transform: translateY(-2px);
+  border-color: hsl(var(--primary) / 0.36);
+  box-shadow: 0 24px 58px -32px hsl(var(--primary) / 0.62);
 }
 
 /* ===== Back to Top Button ===== */

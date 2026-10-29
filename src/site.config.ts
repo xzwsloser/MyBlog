@@ -7,7 +7,7 @@ export const theme: ThemeUserConfig = {
   /** Will be used in index page & copyright declaration */
   author: 'ZhiWei Xiao',
   /** Description metadata for your website. Can be used in page metadata. */
-  description: 'Student / Developer — Exploring AI Infra, Backend & LLMs 🚀',
+  description: 'Exploring LLMs, multimodal AI, embodied intelligence, and AI infrastructure.',
   /** The default favicon for your site which should be a path to an image in the `public/` directory. */
   favicon: '/favicon/favicon.ico',
   /** The default social card image for your site which should be a path to an image in the `public/` directory. */
@@ -26,8 +26,8 @@ export const theme: ThemeUserConfig = {
   },
   /** Set a logo image to show in the homepage. */
   logo: {
-    src: '/src/assets/avatar.png',
-    alt: 'Avatar'
+    src: '',
+    alt: ''
   },
 
   titleDelimiter: '•',

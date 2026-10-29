@@ -1,31 +1,33 @@
 /* Theme */
 :root {
   /* Primary */
-  --primary: 200 29% 45%;
+  --primary: 258 88% 58%;
+  --accent: 190 95% 58%;
   /* Foreground */
-  --foreground: 240 10% 3.9%;
-  --muted-foreground: 240 3.8% 28.1%;
+  --foreground: 222 32% 9%;
+  --muted-foreground: 222 12% 36%;
   /* Background */
-  --background: 210 33% 99%;
-  --muted: 240 4.8% 96%;
-  --card: 0 0% 90%;
+  --background: 216 34% 97%;
+  --muted: 220 24% 94%;
+  --card: 0 0% 100%;
 
   /* Basic */
   --border: 240 5.9% 88%;
   --input: 240 5.9% 90%;
   --ring: 240 5.9% 10%;
-  --radius: 0.5rem;
+  --radius: 0.75rem;
 }
 .dark {
   /* Primary */
-  --primary: 195 95% 85%;
+  --primary: 256 92% 74%;
+  --accent: 190 95% 72%;
   /* Foreground */
   --foreground: 0 0% 98%;
-  --muted-foreground: 240 5% 74.9%;
+  --muted-foreground: 220 12% 74%;
   /* Background */
-  --background: 240 20.54% 5.2%;
-  --muted: 240 5.9% 13%;
-  --card: 240 3.7% 24.9%;
+  --background: 226 52% 6%;
+  --muted: 225 38% 11%;
+  --card: 226 44% 11%;
 
   /* Basic */
   --border: 240 3.7% 22.9%;
@@ -34,6 +36,13 @@
 }
 :root {
   --un-default-border-color: hsl(var(--border) / 1);
+}
+body {
+  min-height: 100dvh;
+  font-family: Inter, 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 html.dark {
   color-scheme: dark;
