@@ -39,11 +39,10 @@ enableRobotsTXT = true
     Content = "Hi, this is ZhiWei Xiao. I am documenting my learning notes in this blog."
 
   [params.assets]
-    favicon = "img/dppeseek.jpg"
-    favicon16x16 = "img/dppeseek.jpg"
-    favicon32x32 = "img/dppeseek.jpg"
-    apple_touch_icon = "img/dppeseek.jpg"
-    safari_pinned_tab = "img/dppeseek.jpg"
+    favicon = "favicon.ico"
+    favicon16x16 = "img/favicon-16x16.png"
+    favicon32x32 = "img/favicon-32x32.png"
+    apple_touch_icon = "img/apple-touch-icon.png"
 
   [params.label]
     text = "ZhiWei Xiao"

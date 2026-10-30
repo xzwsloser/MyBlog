@@ -43,8 +43,10 @@ jobs:
           test -s dist/archives/index.html
           test -s dist/tags/index.html
           test -s dist/search/index.html
-          test -s dist/img/dppeseek.jpg
-          grep -q 'img/dppeseek.jpg' dist/index.html
+          test -s dist/favicon.ico
+          test -s dist/img/favicon-32x32.png
+          test -s dist/img/deepseek.jpg
+          grep -q 'favicon.ico' dist/index.html
           echo "Built $(find dist -type f | wc -l) files."
 
       - name: Upload build artifact
