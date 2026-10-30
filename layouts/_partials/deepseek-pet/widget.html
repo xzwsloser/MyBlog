@@ -1,0 +1,60 @@
+{{- if partial "deepseek-pet/enabled.html" . }}
+{{- $pageKey := "blog" -}}
+{{- $intro := "今天也要读点新东西呀。" -}}
+{{- if .IsHome -}}
+  {{- $pageKey = "home" -}}
+  {{- $intro = "嗨，我是 DeepSeek。今天想读哪一篇？" -}}
+{{- else if eq .Layout "archives" -}}
+  {{- $pageKey = "archives" -}}
+  {{- $intro = "翻翻旧笔记，也许会有新发现。" -}}
+{{- else if eq .Layout "search" -}}
+  {{- $pageKey = "search" -}}
+  {{- $intro = "想找什么？我帮你守着搜索框。" -}}
+{{- else if and (in (slice "taxonomy" "term") .Kind) (eq .Type "tags") -}}
+  {{- $pageKey = "tags" -}}
+  {{- $intro = "从一个标签出发，逛逛不同主题。" -}}
+{{- else if or (eq .Layout "page") (eq .Type "page") -}}
+  {{- $pageKey = "about" -}}
+  {{- $intro = "想认识博主？这一页可以慢慢看。" -}}
+{{- else if eq .Kind "section" -}}
+  {{- $pageKey = "blog" -}}
+  {{- $intro = "文章都在这里，挑一篇喜欢的吧。" -}}
+{{- end -}}
+
+<div class="deepseek-pet" id="deepseek-pet" data-page="{{ $pageKey }}" data-intro="{{ $intro }}">
+  <div class="deepseek-pet__bubble" data-dsp-bubble>
+    <span class="deepseek-pet__name">
+      <img src="{{ "deepseek-pet/img/seal.webp" | relURL }}" alt="" width="20" height="20">
+      <span>DeepSeek</span>
+    </span>
+    <span class="deepseek-pet__message" data-dsp-message>{{ $intro }}</span>
+  </div>
+
+  <div class="deepseek-pet__stage" data-dsp-stage>
+    <span class="deepseek-pet__shadow" aria-hidden="true"></span>
+    <button class="deepseek-pet__character" data-dsp-character type="button"
+      aria-label="和 DeepSeek 桌宠互动" aria-describedby="deepseek-pet-hint"
+      title="点我聊聊，滚轮缩放">
+      <img class="deepseek-pet__sprite" data-dsp-sprite
+        src="{{ "deepseek-pet/img/idle.webp" | relURL }}" alt="" width="420" height="420" draggable="false">
+    </button>
+  </div>
+
+  <button class="deepseek-pet__minimize" data-dsp-minimize type="button" aria-controls="deepseek-pet"
+    title="收起桌宠" aria-label="收起桌宠">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 12h14"></path>
+    </svg>
+  </button>
+  <span class="visually-hidden" id="deepseek-pet-hint">点击互动，使用鼠标滚轮调整大小。</span>
+  <span class="visually-hidden" data-dsp-announcer role="status" aria-live="polite"></span>
+</div>
+
+<button class="deepseek-pet-restore" data-dsp-restore type="button" aria-controls="deepseek-pet"
+  aria-label="展开 DeepSeek 桌宠" title="展开 DeepSeek 桌宠" hidden>
+  <img src="{{ "deepseek-pet/img/seal.webp" | relURL }}" alt="" width="34" height="34">
+  <span>DeepSeek</span>
+</button>
+
+<script src="{{ "deepseek-pet/deepseek-pet.js" | relURL }}" defer></script>
+{{- end }}

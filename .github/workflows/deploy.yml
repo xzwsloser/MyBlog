@@ -46,7 +46,12 @@ jobs:
           test -s dist/favicon.ico
           test -s dist/img/favicon-32x32.png
           test -s dist/img/deepseek.jpg
+          test -s dist/deepseek-pet/deepseek-pet.css
+          test -s dist/deepseek-pet/deepseek-pet.js
+          test -s dist/deepseek-pet/img/idle.webp
           grep -q 'favicon.ico' dist/index.html
+          grep -q 'deepseek-pet/deepseek-pet.js' dist/index.html
+          grep -q 'deepseek-pet/deepseek-pet.js' dist/about/index.html
           echo "Built $(find dist -type f | wc -l) files."
 
       - name: Upload build artifact

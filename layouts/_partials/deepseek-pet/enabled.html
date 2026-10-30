@@ -1,0 +1,11 @@
+{{- $isTags := and (in (slice "taxonomy" "term") .Kind) (eq .Type "tags") -}}
+{{- $show := or
+  (eq .Kind "home")
+  (eq .Kind "section")
+  (eq .Layout "archives")
+  (eq .Layout "search")
+  $isTags
+  (eq .Layout "page")
+  (eq .Type "page")
+-}}
+{{- return $show -}}

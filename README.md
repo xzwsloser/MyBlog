@@ -18,6 +18,19 @@ bun run build
 
 The generated static site is written to `dist/`.
 
+## DeepSeek pet
+
+The home page, post list, archives, search, tags, and about pages include a small
+interactive DeepSeek pet in the lower-right corner. It is intentionally omitted
+from individual post pages. The component is plain HTML, CSS, and JavaScript;
+the implementation lives under `layouts/_partials/deepseek-pet/` and
+`static/deepseek-pet/`.
+
+The character artwork and expressions are adapted from
+[keleus/deepseek-pet](https://github.com/keleus/deepseek-pet), licensed under
+the MIT License. The upstream license notice is included at
+`static/deepseek-pet/LICENSE`.
+
 ## Deployment
 
 `.github/workflows/deploy.yml` validates builds on pull requests and deploys to production on pushes to `main` or `master`. The workflow also supports manual runs from GitHub Actions.
