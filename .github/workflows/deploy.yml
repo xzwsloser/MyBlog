@@ -41,6 +41,7 @@ jobs:
           test -s dist/index.html
           test -s dist/about/index.html
           test -s dist/archives/index.html
+          test -s dist/tags/index.html
           test -s dist/search/index.html
           test -s dist/img/dppeseek.jpg
           grep -q 'img/dppeseek.jpg' dist/index.html

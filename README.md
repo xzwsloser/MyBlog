@@ -29,6 +29,29 @@ Configure these repository secrets before deploying:
 - `SSH_PRIVATE_KEY`
 - `REMOTE_TARGET`
 
+### Production HTTPS
+
+The production server must terminate TLS on port 443. If Nginx only listens on
+port 80, absolute `https://` links will fail even though the corresponding
+`http://` pages are present.
+
+Install a certificate with Certbot on the server:
+
+```shell
+sudo apt-get update
+sudo apt-get install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d xiaozhiwei.tech -d www.xiaozhiwei.tech --redirect
+```
+
+Then make sure the cloud firewall or security group also allows inbound TCP
+port 443. Verify all public routes over HTTPS:
+
+```shell
+for path in / /posts/ /archives/ /about/ /tags/ /search/; do
+  curl -fsS -o /dev/null -w "%{http_code} ${path}\n" "https://xiaozhiwei.tech${path}"
+done
+```
+
 ## Content
 
 Add Markdown posts under `content/posts/`. The site starts without any blog posts. The About page lives at `content/about.md` and is intentionally empty for now.

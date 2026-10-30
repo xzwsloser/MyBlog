@@ -1,4 +1,5 @@
 baseURL = "https://xiaozhiwei.tech/"
+relativeURLs = true
 locale = "en-us"
 defaultContentLanguage = "en"
 title = "ZhiWei Xiao"
