@@ -1,13 +1,24 @@
-name: Deploy to Server
+name: Build and Deploy
 
 on:
   push:
     branches: [main, master]
+  pull_request:
+    branches: [main, master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
-  build-and-deploy:
+  build:
+    name: Build site
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -15,13 +26,67 @@ jobs:
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
-          bun-version: latest
+          bun-version: 1.4.4
 
       - name: Install dependencies
-        run: bun install
+        run: bun install --frozen-lockfile
 
       - name: Build
         run: bun run build
+
+      - name: Verify build output
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s dist/index.html
+          test -s dist/about/index.html
+          test -s dist/archives/index.html
+          test -s dist/search/index.html
+          test -s dist/img/dppeseek.jpg
+          grep -q 'img/dppeseek.jpg' dist/index.html
+          echo "Built $(find dist -type f | wc -l) files."
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+          if-no-files-found: error
+          retention-days: 7
+
+  deploy:
+    name: Deploy production
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://xiaozhiwei.tech
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: dist
+
+      - name: Validate deployment secrets
+        shell: bash
+        env:
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          REMOTE_TARGET: ${{ secrets.REMOTE_TARGET }}
+        run: |
+          set -euo pipefail
+          missing=0
+          for name in REMOTE_HOST REMOTE_USER SSH_PRIVATE_KEY REMOTE_TARGET; do
+            if [ -z "${!name}" ]; then
+              echo "::error::$name is not configured"
+              missing=1
+            fi
+          done
+          exit "$missing"
 
       - name: Deploy to server
         uses: appleboy/scp-action@v0.1.7
@@ -32,6 +97,7 @@ jobs:
           source: 'dist/*'
           target: ${{ secrets.REMOTE_TARGET }}
           strip_components: 1
+          command_timeout: 10m
           rm: true
 
       - name: Reload nginx
@@ -40,4 +106,14 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: systemctl reload nginx
+          command_timeout: 10m
+          script_stop: true
+          script: |
+            set -e
+            nginx -t
+            systemctl reload nginx
+
+      - name: Deployment summary
+        shell: bash
+        run: |
+          echo "Deployed ${GITHUB_SHA::7} to production." >> "$GITHUB_STEP_SUMMARY"

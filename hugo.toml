@@ -1,0 +1,94 @@
+baseURL = "https://xiaozhiwei.tech/"
+locale = "en-us"
+defaultContentLanguage = "en"
+title = "ZhiWei Xiao"
+theme = "PaperMod"
+enableRobotsTXT = true
+
+[pagination]
+  pagerSize = 10
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[params]
+  env = "production"
+  description = "Document my learning notes."
+  author = "ZhiWei Xiao"
+  DateFormat = "2006-01-02"
+  defaultTheme = "auto"
+  disableThemeToggle = false
+  ShowReadingTime = true
+  ShowShareButtons = true
+  ShowPostNavLinks = true
+  ShowBreadCrumbs = false
+  ShowCodeCopyButtons = true
+  ShowRssButtonInSectionTermList = true
+  mainSections = ["posts"]
+
+  [params.homeInfoParams]
+    Title = "👋 Welcome to ZhiWei Xiao's Blog"
+    Content = "Hi, this is ZhiWei Xiao. I am documenting my learning notes in this blog."
+
+  [params.assets]
+    favicon = "img/dppeseek.jpg"
+    favicon16x16 = "img/dppeseek.jpg"
+    favicon32x32 = "img/dppeseek.jpg"
+    apple_touch_icon = "img/dppeseek.jpg"
+    safari_pinned_tab = "img/dppeseek.jpg"
+
+  [params.label]
+    text = "ZhiWei Xiao"
+
+  [params.footer]
+    hideCopyright = false
+
+  [[params.socialIcons]]
+    name = "github"
+    title = "GitHub"
+    url = "https://github.com/xzwsloser"
+
+[[menu.main]]
+  identifier = "posts"
+  name = "Posts"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  identifier = "archives"
+  name = "Archive"
+  url = "/archives/"
+  weight = 2
+
+[[menu.main]]
+  identifier = "search"
+  name = "Search"
+  url = "/search/"
+  weight = 3
+
+[[menu.main]]
+  identifier = "tags"
+  name = "Tags"
+  url = "/tags/"
+  weight = 4
+
+[[menu.main]]
+  identifier = "about"
+  name = "About"
+  url = "/about/"
+  weight = 5
+
+[markup]
+  [markup.highlight]
+    noClasses = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 4
+    ordered = true
