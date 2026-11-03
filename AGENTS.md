@@ -21,6 +21,7 @@ node_modules/.bin/hugo --gc --minify --cleanDestinationDir --destination dist
 - 代码块：`layouts/_markup/render-codeblock.html`（语言栏 + 复制按钮），复制脚本在 `layouts/_partials/extend_footer.html`。
 - 文章布局：`layouts/posts/page.html`（PaperMod `single.html` 副本；避免被根目录 `layouts/page.html` 的普通页布局接管）。
 - 数学：`hugo.toml` 已开启 Goldmark passthrough，`layouts/_partials/extend_head.html` 加载 MathJax 3。
+- 分享按钮：`ShowShareButtons = false`，文章底部不显示 X / Facebook 等分享图标。
 - 临时目录：`.larkdoc/`（飞书拉取）、`.screens/`（截图/PDF）、`.tmptest/`（Hugo 小实验），均不入库。
 
 ## 版式规范
