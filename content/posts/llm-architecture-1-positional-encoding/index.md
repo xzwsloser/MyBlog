@@ -569,7 +569,7 @@ $$
 &\quad = q^f_{m_1,m_2}R^f_{m1}(R^f)^T_{n_1}(k^f)^T_{n_1, n_2} \\
 &\qquad + q^b_{m_1, m_2}R^b_{m2}(R^b)^T_{n_2}(k^b)_{n_1, n_2} \\
 &\quad = q_{m_1, m_2}^f R^f_{m_1 - m_2}(k^f)_{n_1, n_2} \\
-&\qquad + q_{m_1, m_2}^b R^b_{m_1 - m_2}(k^b)_{n_1, n_2} \\
+&\qquad + q_{m_1, m_2}^b R^b_{n_1 - n_2}(k^b)_{n_1, n_2} \\
 &\quad = F(m_1-m_2) + G(n_1-n_2)
 \end{aligned}
 $$
