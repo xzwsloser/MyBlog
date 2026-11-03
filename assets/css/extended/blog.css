@@ -1,0 +1,407 @@
+/* ------------------------------------------------------------------
+   Long-form post styling (scoped to single posts)
+   ------------------------------------------------------------------ */
+
+:root {
+    --blog-accent: #2563eb;
+    --blog-qa: #7c3aed;
+    --blog-note: #0d9488;
+    --blog-tint: 5%;
+}
+
+:root[data-theme="dark"] {
+    --blog-accent: #7aa2ff;
+    --blog-qa: #b39cff;
+    --blog-note: #5fd0c0;
+}
+
+.post-single .post-content {
+    font-size: 1.02rem;
+    line-height: 1.82;
+}
+
+.post-single .post-content p {
+    margin: 0 0 1.05em;
+}
+
+.post-single .post-content h2 {
+    margin-top: 2.6rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--border);
+    letter-spacing: -0.01em;
+}
+
+.post-single .post-content h2:first-of-type {
+    margin-top: 1.6rem;
+}
+
+.post-single .post-content h3 {
+    margin-top: 2rem;
+    letter-spacing: -0.005em;
+}
+
+.post-single .post-content h4 {
+    margin-top: 1.9rem;
+    padding-left: 0.7rem;
+    color: var(--primary);
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    border-left: 3px solid var(--blog-accent);
+}
+
+.post-single .post-content strong {
+    font-weight: 650;
+}
+
+/* Inline code ------------------------------------------------------ */
+
+.post-single .post-content :not(pre) > code {
+    padding: 0.16em 0.38em;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-size: 0.83em;
+    background: var(--code-bg);
+}
+
+/* Blockquotes ------------------------------------------------------ */
+
+.post-single .post-content blockquote {
+    position: relative;
+    margin: 1.4rem 0;
+    padding: 0.85rem 1.1rem 0.85rem 1.15rem;
+    border: 1px solid color-mix(in srgb, var(--blog-accent) 16%, var(--border));
+    border-left: 3px solid var(--blog-accent);
+    border-radius: 0 10px 10px 0;
+    background: color-mix(in srgb, var(--blog-accent) var(--blog-tint), var(--theme));
+    color: var(--secondary);
+    font-size: 0.95rem;
+    line-height: 1.75;
+}
+
+.post-single .post-content blockquote p {
+    margin-bottom: 0.55em;
+}
+
+.post-single .post-content blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+.post-single .post-content blockquote strong {
+    color: var(--primary);
+}
+
+/* Callout cards ---------------------------------------------------- */
+
+.callout {
+    --callout-accent: var(--blog-note);
+    margin: 1.7rem 0;
+    padding: 1.05rem 1.2rem;
+    border: 1px solid color-mix(in srgb, var(--callout-accent) 22%, var(--border));
+    border-radius: 14px;
+    background:
+        linear-gradient(180deg,
+            color-mix(in srgb, var(--callout-accent) 7%, var(--theme)),
+            color-mix(in srgb, var(--callout-accent) 2%, var(--theme)));
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.callout--qa {
+    --callout-accent: var(--blog-qa);
+}
+
+.callout--note {
+    --callout-accent: var(--blog-note);
+}
+
+.callout__head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.7rem;
+    color: var(--primary);
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+.callout__emoji {
+    font-size: 1.12rem;
+    line-height: 1;
+}
+
+.callout__title {
+    letter-spacing: 0.01em;
+}
+
+.callout__body > :last-child {
+    margin-bottom: 0;
+}
+
+.callout__body p {
+    margin-bottom: 0.7em;
+}
+
+.callout__body ul,
+.callout__body ol {
+    margin: 0.4rem 0 0.6rem;
+}
+
+.callout__body blockquote {
+    margin: 0.9rem 0;
+    background: color-mix(in srgb, var(--callout-accent) 5%, var(--theme));
+    border-left-color: color-mix(in srgb, var(--callout-accent) 55%, var(--border));
+}
+
+.callout__body blockquote p {
+    margin-bottom: 0.35em;
+}
+
+/* Feature cards (a list rendered as tinted panels) ----------------- */
+
+.feature-list {
+    margin: 1.5rem 0;
+}
+
+.feature-list > ul {
+    display: grid;
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.feature-list > ul > li {
+    position: relative;
+    margin: 0;
+    padding: 1rem 1.1rem 0.9rem 1.35rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--blog-accent) 3.5%, var(--theme));
+}
+
+.feature-list > ul > li::before {
+    content: "";
+    position: absolute;
+    top: 0.95rem;
+    bottom: 0.95rem;
+    left: 0;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--blog-accent);
+    opacity: 0.75;
+}
+
+.feature-list > ul > li > p:first-child {
+    margin: 0 0 0.55rem;
+    color: var(--primary);
+    font-weight: 700;
+}
+
+.feature-list > ul > li > p:first-child strong {
+    font-weight: inherit;
+}
+
+.feature-list > ul > li > p:last-child {
+    margin-bottom: 0;
+}
+
+/* Figures ---------------------------------------------------------- */
+
+.post-single .post-content figure {
+    margin: 1.9rem 0;
+    text-align: center;
+}
+
+.post-single .post-content figure img {
+    display: block;
+    max-width: 100%;
+    margin: 0 auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.055);
+}
+
+[data-theme="dark"] .post-single .post-content figure img {
+    box-shadow: 0 3px 16px rgba(0, 0, 0, 0.3);
+}
+
+.post-single .post-content figure figcaption {
+    margin-top: 0.7rem;
+    color: var(--secondary);
+    font-size: 0.86rem;
+    font-weight: 400;
+    line-height: 1.65;
+}
+
+.post-single .post-content figure figcaption p {
+    margin: 0;
+}
+
+/* Math ------------------------------------------------------------- */
+
+.post-single .post-content mjx-container[display="true"] {
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0.45rem 0;
+}
+
+.post-single .post-content mjx-container {
+    font-size: 103% !important;
+}
+
+/* Code blocks ------------------------------------------------------ */
+
+.code-block {
+    margin: 1.6rem 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--code-block-bg) 70%, #000 30%);
+    border-radius: 12px;
+    background: var(--code-block-bg);
+}
+
+.code-block__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0.85rem 0.55rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.code-block__lang {
+    color: rgba(255, 255, 255, 0.52);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.code-block__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.32rem;
+    padding: 0.24rem 0.55rem;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.72rem;
+    line-height: 1.2;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.code-block__copy:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.38);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.code-block__copy.is-copied {
+    color: #7ee2b8;
+    border-color: rgba(126, 226, 184, 0.45);
+}
+
+.code-block__body .highlight {
+    margin: 0 !important;
+    border-radius: 0;
+    background: transparent !important;
+}
+
+.code-block__body .highlight pre {
+    margin: 0;
+    padding: 1rem 1.1rem;
+    background: transparent !important;
+    overflow-x: auto;
+}
+
+.code-block__body .highlight pre code {
+    display: block;
+    padding: 0;
+    background: transparent !important;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    border-radius: 0;
+    word-break: normal;
+}
+
+.code-block__body .chroma {
+    background: transparent !important;
+}
+
+/* Table of contents ------------------------------------------------ */
+
+.post-single details.toc {
+    margin: 0 0 1.8rem;
+    padding: 0.2rem 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--blog-accent) 3%, var(--theme));
+}
+
+.post-single details.toc summary {
+    padding: 0.65rem 1.1rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.post-single details.toc .inner {
+    margin: 0;
+    padding: 0.1rem 1.1rem 0.75rem;
+}
+
+.post-single details.toc .inner > nav > ul {
+    padding-left: 0;
+}
+
+.post-single details.toc ul {
+    margin: 0;
+    padding-left: 1.05rem;
+    list-style: none;
+}
+
+.post-single details.toc ul ul {
+    margin-top: 0.15rem;
+    border-left: 1px dashed var(--border);
+}
+
+.post-single details.toc li {
+    margin: 0.28rem 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.post-single details.toc a {
+    color: var(--secondary);
+    text-decoration: none;
+}
+
+.post-single details.toc a:hover {
+    color: var(--blog-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+/* Small screens ---------------------------------------------------- */
+
+@media (max-width: 640px) {
+    .post-single .post-content {
+        font-size: 0.98rem;
+    }
+
+    .callout {
+        padding: 0.9rem 0.95rem;
+        border-radius: 12px;
+    }
+
+    .feature-list > ul > li {
+        padding: 0.9rem 0.95rem 0.85rem 1.2rem;
+    }
+
+    .code-block__body .highlight pre {
+        padding: 0.85rem;
+    }
+}

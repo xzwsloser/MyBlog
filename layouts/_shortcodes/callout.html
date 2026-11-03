@@ -1,0 +1,10 @@
+{{- $type := .Get "type" | default "note" -}}
+{{- $emoji := .Get "emoji" | default "💡" -}}
+{{- $title := .Get "title" | default "" -}}
+<div class="callout callout--{{ $type }}">
+  <div class="callout__head">
+    <span class="callout__emoji" aria-hidden="true">{{ $emoji }}</span>
+    {{- with $title }}<span class="callout__title">{{ . }}</span>{{ end -}}
+  </div>
+  <div class="callout__body">{{ .Inner | safeHTML }}</div>
+</div>
