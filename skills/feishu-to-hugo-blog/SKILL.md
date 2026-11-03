@@ -125,8 +125,9 @@ GIT_SSH_COMMAND='ssh -F /dev/null -o StrictHostKeyChecking=accept-new' \
 4. **`$$` 块内以 `+`/`-`/`*` 开头的行**会被 Goldmark 当列表，导致整个公式块失效。把运算符放在上一行末尾，或把续行写成 `&\quad + ...`。
 5. **裸 `<`/`>`**：`<f(x), g(y)>` 会被浏览器当 HTML 标签吃掉，改成 `\langle ... \rangle`。
 6. **项目 `layouts/page.html` 会接管所有普通页**：文章需要 `layouts/posts/page.html`（PaperMod `single.html` 的副本）才能拿到 post header、meta、TOC、tags。
-7. **图片懒加载**：截图/打印前把所有 `img.loading` 设为 `eager` 并滚到底，否则长文后半段图片空白。
-8. **内容校对**：只做错别字、标点、明显笔误的润色；技术表述、公式含义不改。逐段对照原文检查漏段。
+7. **列表卡片用 `.RelPermalink`**：若站点同时存在 HTTP/HTTPS 访问，绝对 `.Permalink` 会让卡片从 HTTP 跳到 HTTPS；首页卡片应使用相对链接，保持当前协议。
+8. **图片懒加载**：截图/打印前把所有 `img.loading` 设为 `eager` 并滚到底，否则长文后半段图片空白。
+9. **内容校对**：只做错别字、标点、明显笔误的润色；技术表述、公式含义不改。逐段对照原文检查漏段。
 
 ## 交付清单
 

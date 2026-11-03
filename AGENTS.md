@@ -53,6 +53,12 @@ math: true
 - 代码：普通 fenced block，语言标注要正确。
 - 目录：由 `ShowToc` 自动生成，标题层级保持原文。
 
+### 首页
+
+- 首页列表由 `layouts/list.html` 覆盖：紧凑 hero + “最新文章”栏 + 卡片 + “阅读全文”提示。
+- 文章卡片的覆盖链接使用 `.RelPermalink`，避免从 HTTP 首页点进 HTTPS 文章时切换协议失败。
+- 首页样式在 `assets/css/extended/blog.css` 的 `Home page` 段，`home-info` 不再使用 320px 最小高度。
+
 ## 飞书文档迁移流程
 
 详细步骤、命令与坑位见 [`skills/feishu-to-hugo-blog/SKILL.md`](skills/feishu-to-hugo-blog/SKILL.md)。核心步骤：
@@ -94,3 +100,9 @@ math: true
 - 新增：callout / feature-list 短代码、代码块 render hook、`posts/page.html`、MathJax passthrough、`blog.css`、`i18n/en.yaml` 目录标题
 - 修正的明显笔误：`编程→变成`、`相似新→相似性`、`集合→几何`、`不放→不妨`、`蓄念→训练`、`不适用→不使用`、`有点是→优点是`、`确实是→缺点是`、`高频（应低频）`、`衰减区间→衰减趋势`
 - 版式：自动目录、卡片式 Q&A / 性质块、图注、代码语言栏、公式居中与 aligned 换行
+
+### 2026-11-03 · 首页改版
+
+- 问题：`home-info` 最小高度 320px 把文章列表推得过低；卡片链接使用绝对 `Permalink`，从 HTTP 首页点击会跳到当前不可用的 HTTPS。
+- 修复：`layouts/list.html` 增加“最新文章”栏、分类眉标、阅读全文提示；卡片改用 `.RelPermalink`；`blog.css` 压缩 hero 并重做卡片 hover。
+- 同步更新 `skills/feishu-to-hugo-blog/SKILL.md` 的发布注意事项。
