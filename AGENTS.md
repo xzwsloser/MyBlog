@@ -72,6 +72,7 @@ math: true
 4. 裸 `<f(x), g(y)>` 会被浏览器当 HTML 标签吞掉；改成 `\langle ... \rangle`。
 5. 截图/打印长文前把 `img.loading` 改为 `eager`，否则懒加载图片是空白。
 6. `lark-cli` 需要写 `~/.local/share/lark-cli` 的 token 缓存；沙箱只读时临时放宽权限，否则报 `keychain Set failed`。
+7. 本机 SSH 配置损坏或 22 端口不通时，用 443 推送：`GIT_SSH_COMMAND='ssh -F /dev/null' git push ssh://git@ssh.github.com:443/xzwsloser/MyBlog.git main:main`。
 
 ## 验收清单
 

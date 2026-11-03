@@ -108,7 +108,14 @@ git commit -m "feat: add <title>"
 git push origin main
 ```
 
-`.github/workflows/deploy.yml` 在 push 到 `main/master` 时构建并部署。推送后确认 Actions 成功，再访问线上 URL 复核。
+若本机 SSH 报 `Bad owner or permissions on /etc/ssh/ssh_config.d/...`，或 22 端口被拒，可绕过系统配置走 443：
+
+```bash
+GIT_SSH_COMMAND='ssh -F /dev/null -o StrictHostKeyChecking=accept-new' \
+  git push ssh://git@ssh.github.com:443/<owner>/<repo>.git main:main
+```
+
+`.github/workflows/deploy.yml` 在 push 到 `main/master` 时构建并部署。推送后确认 Actions 成功（API 限流时可抓取 `https://github.com/<owner>/<repo>/actions/workflows/deploy.yml` 页面里的 run 状态），再访问线上 URL 复核。
 
 ## 高频坑（务必检查）
 
