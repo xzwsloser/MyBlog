@@ -90,7 +90,7 @@ math: true
 ### 2026-11-03 · 大模型架构(一): 位置编码
 
 - 来源：<https://dcnlcoue52zc.feishu.cn/wiki/Kyejw6zF5iDM89k2WLgc3ef7n1e>
-- 产物：`content/posts/llm-architecture-1-positional-encoding/`（10 张图 + 2 段代码 + 4 个 Q&A 卡片 + 4 张性质卡片）
+- 产物：`content/posts/llm-architecture-1-positional-encoding/`（10 张图 + 2 段代码 + 3 个 Q&A 卡片 + 2 个提示卡片 + 4 张性质卡片）
 - 新增：callout / feature-list 短代码、代码块 render hook、`posts/page.html`、MathJax passthrough、`blog.css`、`i18n/en.yaml` 目录标题
 - 修正的明显笔误：`编程→变成`、`相似新→相似性`、`集合→几何`、`不放→不妨`、`蓄念→训练`、`不适用→不使用`、`有点是→优点是`、`确实是→缺点是`、`高频（应低频）`、`衰减区间→衰减趋势`
 - 版式：自动目录、卡片式 Q&A / 性质块、图注、代码语言栏、公式居中与 aligned 换行
